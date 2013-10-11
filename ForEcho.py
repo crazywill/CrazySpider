@@ -17,18 +17,15 @@ def getAllFiles(pathList,fileList,postfix):
                     tmp=item.split('.')
                     if (len(tmp)>1) and (cmp(tmp[1],postfix)==0):
                         fileList.append(path.rstrip('/')+'/'+item)
-                        print item
 
 def formatExcel(path):
     if len(path)>0:
         excelFile = xlrd.open_workbook(path)
         sheets=excelFile.sheets()
-        print len(sheets)
         outPut=xlwt.Workbook()
         for sheet in sheets:
             fileOutput=[]
             rows=sheet.nrows
-            print 'row number is %s'%(rows)
             outPutSheet=outPut.add_sheet(sheet.name)
             #style
             style = xlwt.XFStyle()
@@ -122,12 +119,19 @@ def formatExcel(path):
             outPutSheet.write(i,3,format(Sum3,',.2f'),styleN)
             outPutSheet.write(i,4,format(Sum4,',.2f'),styleN)
     savePath=path.split('.')[0]+'formatted.xls'
-    print 'savePath is %s'%(savePath)
+    #print 'savePath is %s'%(savePath)
     outPut.save(savePath)
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
+
+
+
+
+print '-----------This program is designed for Echo!------------'
+print '----------------Author:  Will----------------------------'
+print '----------------Email:   willwanghanyu@gmail.com---------'
+print '----------------Version: 1.0-----------------------------'
+print '----------------Date:    2013.10.11----------------------'
+
 currentPath=os.getcwd()
-print 'currentPath is %s'%(currentPath)
 pathList=[]
 fileList=[]
 fileOutput=[]
@@ -135,3 +139,7 @@ pathList.append(currentPath)
 getAllFiles(pathList,fileList,'xls')
 for item in fileList:
     formatExcel(item)
+print '----------------------Complete!--------------------------'
+print '---------------Press ENTER key to leave!-----------------'
+line=sys.stdin.readline()
+exit(0)
