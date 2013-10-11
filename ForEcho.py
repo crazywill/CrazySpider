@@ -32,6 +32,7 @@ def formatExcel(path):
             outPutSheet=outPut.add_sheet(sheet.name)
             #style
             style = xlwt.XFStyle()
+            styleN = xlwt.XFStyle()
             font = xlwt.Font()
             
             font.name = 'SimSun'    # 指定“宋体”
@@ -46,10 +47,24 @@ def formatExcel(path):
             borders.bottom_colour= 0
             style.borders = borders
 
+            alignment = xlwt.Alignment() # Create Alignment
+            alignment.horz = xlwt.Alignment.HORZ_RIGHT # May be: HORZ_GENERAL, HORZ_LEFT, HORZ_CENTER, HORZ_RIGHT, HORZ_FILLED, HORZ_JUSTIFIED, HORZ_CENTER_ACROSS_SEL, HORZ_DISTRIBUTED
+            alignment.vert = xlwt.Alignment.VERT_CENTER 
+
             styleBlueBkg = xlwt.easyxf('pattern: pattern solid, fore_colour gray25;')
             styleBlueBkg.borders=borders
+
+            styleBlueBkgR = xlwt.easyxf('pattern: pattern solid, fore_colour gray25;')
+            styleBlueBkgR.borders=borders
+            styleBlueBkgR.alignment=alignment
+
             styleCommon = xlwt.easyxf('pattern: pattern solid, fore_colour white;')
             styleCommon.borders=borders
+
+            styleCommonR = xlwt.easyxf('pattern: pattern solid, fore_colour white;')
+            styleCommonR.borders=borders
+            styleCommonR.alignment=alignment
+
             styleNormal = xlwt.easyxf('font: bold on')
             styleNormal.borders=borders
 
@@ -82,26 +97,30 @@ def formatExcel(path):
                 if(i%2==1):
                     #pattern.pattern_back_colour = 0x37
                     style=styleBlueBkg
+                    styleN=styleBlueBkgR
                 else:
                     style=styleCommon
+                    styleN=styleCommonR
                 outPutSheet.write(i,0,item[0],style)
                 outPutSheet.write(i,1,item[1],style)
-                outPutSheet.write(i,2,item[2],style)
-                outPutSheet.write(i,3,item[3],style)
-                outPutSheet.write(i,4,item[4],style)
+                outPutSheet.write(i,2,format(item[2],',.2f'),styleN)
+                outPutSheet.write(i,3,format(item[3],',.2f'),styleN)
+                outPutSheet.write(i,4,format(item[4],',.2f'),styleN)
                 i=i+1
                 Sum2+=item[2]
                 Sum3+=item[3]
                 Sum4+=item[4]
             if(i%2==1):
                 style=styleBlueBkg
+                styleN=styleBlueBkgR
             else:
                 style=styleCommon
+                styleN=styleCommonR
             outPutSheet.write(i,0,unicode('合计',"utf8"),style)
             outPutSheet.write(i,1,unicode('',"utf8"),style)
-            outPutSheet.write(i,2,Sum2,style)
-            outPutSheet.write(i,3,Sum3,style)
-            outPutSheet.write(i,4,Sum4,style)
+            outPutSheet.write(i,2,format(Sum2,',.2f'),styleN)
+            outPutSheet.write(i,3,format(Sum3,',.2f'),styleN)
+            outPutSheet.write(i,4,format(Sum4,',.2f'),styleN)
     savePath=path.split('.')[0]+'formatted.xls'
     print 'savePath is %s'%(savePath)
     outPut.save(savePath)
