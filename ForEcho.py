@@ -15,24 +15,37 @@ def getAllFiles(pathList,fileList,postfix):
                     pathList.append(path.rstrip('/')+'/'+item)             
                 else:
                     tmp=item.split('.')
-                    if (len(tmp)>1) and (cmp(tmp[1],postfix)==0):
+                    if (len(tmp)>1) and (cmp(tmp[len(tmp)-1],postfix)==0):
                         fileList.append(path.rstrip('/')+'/'+item)
+
+def isDigitType(data):
+    return isinstance(data,int) or isinstance(data,float) or isinstance(data,long)
 
 def formatExcel(path):
     if len(path)>0:
         excelFile = xlrd.open_workbook(path)
+        #print path
         sheets=excelFile.sheets()
         outPut=xlwt.Workbook()
+        isSave=False
         for sheet in sheets:
+            #print sheet.name
             fileOutput=[]
             rows=sheet.nrows
+            cols=sheet.ncols
+            #print 'cols is %d'%(cols)
+            if cols<12:
+                continue
+            #print 'start work'
             outPutSheet=outPut.add_sheet(sheet.name)
+            isSave=True
             #style
             style = xlwt.XFStyle()
             styleN = xlwt.XFStyle()
             font = xlwt.Font()
             
             font.name = 'SimSun'    # 指定“宋体”
+            font.colour_index = 0x09
             style.font = font
             
             
@@ -62,8 +75,9 @@ def formatExcel(path):
             styleCommonR.borders=borders
             styleCommonR.alignment=alignment
 
-            styleNormal = xlwt.easyxf('font: bold on')
+            styleNormal = xlwt.easyxf('font: bold on; pattern: pattern solid, fore_colour black;')
             styleNormal.borders=borders
+            styleNormal.font=font
 
             outPutSheet.col(0).width=6666
             outPutSheet.col(1).width=6666
@@ -76,6 +90,8 @@ def formatExcel(path):
                 value7=sheet.cell_value(i,7)
                 value9=sheet.cell_value(i,9)
                 value11=sheet.cell_value(i,11)
+                #print type(value9)
+                #print type(value11)
                 tmp='净申购（元）'
                 if i==0:
                     outPutSheet.write(i,0,value6,styleNormal)
@@ -83,8 +99,12 @@ def formatExcel(path):
                     outPutSheet.write(i,2,value9,styleNormal)
                     outPutSheet.write(i,3,value11,styleNormal)
                     outPutSheet.write(i,4,unicode(tmp, "utf8"),styleNormal)
-                else:             
-					fileOutput.append((value6,value7,value9,value11,value9-value11))
+                else:
+                    #print 'value9: %d value11:%d '%(isDigitType(value9),isDigitType(value11))
+                    if isDigitType(value9) and isDigitType(value11):
+                        fileOutput.append((value6,value7,value9,value11,value9-value11))
+                    else:
+                        continue
             fileOutput=sorted(fileOutput, key=lambda x: x[4],reverse=True)
             i=1
             Sum2=0
@@ -118,28 +138,65 @@ def formatExcel(path):
             outPutSheet.write(i,2,format(Sum2,',.2f'),styleN)
             outPutSheet.write(i,3,format(Sum3,',.2f'),styleN)
             outPutSheet.write(i,4,format(Sum4,',.2f'),styleN)
-    savePath=path.split('.')[0]+'formatted.xls'
-    #print 'savePath is %s'%(savePath)
-    outPut.save(savePath)
+        if isSave:
+            t=u'统计稿.xls'
+            #print t
+            #t.encode('gbk')
+            savePath=unicode(path.split('.')[0],"gbk")
+            #print savePath
+            savePath=savePath+t
+            #print 'savePath is %s'%(savePath)
+            outPut.save(savePath)
 
 
+#print ""
+#print ""
+#print "              ((`'-\"``\"\"-'`))"
+#print "               )   -    -  ( "
+#print "              /   (o _ o)   \  "
+#print "              \    ( 0 )    / "
+#print "              _'-.._'='_..-'_ "
+#print "            /`;#'#'#.-.#'#'#;`\ "
+#print "            \_))    '#'    ((_/ "
+#print "              #.            .# "
+#print "              '#.          .#'  "
+#print "              / '#.      .#' \ "
+#print "             _\  \\'#   ;#'/  /_ "
+#print "            (((___) '#' (___)))"
 
+print ""
+print "                (()__(()"
+print "                /       \\" 
+print "               ( /    \\  \\"
+print "                \ o o    /"
+print "                (_()_)__/ \\"
+print "               / _,==.____ \\"
+print "              (   |--|      )"
+print "              /\_.|__|'-.__/\_"
+print "             / (        /     \\" 
+print "             \\  \\      (      /"
+print "             )  '._____)    /"
+print "           (((____.--(((____/"
+print ""
+print ""
+print '-----------This program is designed for Echo!-------------'
+print '----------------Author:  Will-----------------------------'
+print '----------------Email:   willwanghanyu@gmail.com----------'
+print '----------------Version: 1.02-----------------------------'
 
-print '-----------This program is designed for Echo!------------'
-print '----------------Author:  Will----------------------------'
-print '----------------Email:   willwanghanyu@gmail.com---------'
-print '----------------Version: 1.0-----------------------------'
-print '----------------Date:    2013.10.11----------------------'
 
 currentPath=os.getcwd()
 pathList=[]
 fileList=[]
 fileOutput=[]
 pathList.append(currentPath)
+getAllFiles(pathList,fileList,'xlsx')
+pathList.append(currentPath)
 getAllFiles(pathList,fileList,'xls')
+#print fileList
 for item in fileList:
     formatExcel(item)
-print '----------------------Complete!--------------------------'
-print '---------------Press ENTER key to leave!-----------------'
+print '----------------------Complete!---------------------------'
+print '---------------Press ENTER key to exit!-------------------'
 line=sys.stdin.readline()
-exit(0)
+#exit(0)
