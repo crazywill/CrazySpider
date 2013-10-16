@@ -1,0 +1,18 @@
+<span style="font-size:13px;"><?xml version="1.0" encoding="utf-8"?>
+<config>
+	<input>
+		<col>F</col>
+		<col>H</col>
+	</input>
+	<output>
+		<col>
+			<name>same</name>
+			<operation>F+H</operation>
+		</col>
+	</output>
+	<sort>
+		<col index='F' opt='+'></col>
+		<col index='H' opt='-'></col>
+	</sort>
+</config>
+</span>

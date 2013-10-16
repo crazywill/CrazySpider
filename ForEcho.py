@@ -4,6 +4,10 @@ import xlrd
 import xlwt
 import os
 import sys
+import platform
+
+def readConfg(path,inputCols,outputCols,sortOpt):
+    config=open(path,'rU')
 
 def getAllFiles(pathList,fileList,postfix):            
     while len(pathList) > 0:                         
@@ -142,7 +146,11 @@ def formatExcel(path):
             t=u'统计稿.xls'
             #print t
             #t.encode('gbk')
-            savePath=unicode(path.split('.')[0],"gbk")
+            systemType=platform.system()
+            if cmp(systemType,'Linux')==0:
+                savePath=unicode(path.split('.')[0],'utf8')
+            else:
+                savePath=unicode(path.split('.')[0],"gbk")
             #print savePath
             savePath=savePath+t
             #print 'savePath is %s'%(savePath)
