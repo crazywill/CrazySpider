@@ -34,7 +34,7 @@ def formatExcel(path):
             rows=sheet.nrows
             cols=sheet.ncols
             #print 'cols is %d'%(cols)
-            if cols<12:
+            if cols<11:
                 continue
             #print 'start work'
             outPutSheet=outPut.add_sheet(sheet.name)
@@ -86,10 +86,10 @@ def formatExcel(path):
             outPutSheet.col(4).width=6666
             #end
             for i in range(rows):
-                value6=sheet.cell_value(i,6)
-                value7=sheet.cell_value(i,7)
-                value9=sheet.cell_value(i,9)
-                value11=sheet.cell_value(i,11)
+                value6=sheet.cell_value(i,5)
+                value7=sheet.cell_value(i,6)
+                value9=sheet.cell_value(i,8)
+                value11=sheet.cell_value(i,10)
                 #print type(value9)
                 #print type(value11)
                 tmp='净申购（元）'
@@ -179,10 +179,10 @@ print "             )  '._____)    /"
 print "           (((____.--(((____/"
 print ""
 print ""
-print '-----------This program is designed for Echo!-------------'
-print '----------------Author:  Will-----------------------------'
-print '----------------Email:   willwanghanyu@gmail.com----------'
-print '----------------Version: 1.02-----------------------------'
+#print '-----------This program is designed for Echo!-------------'
+#print '----------------Author:  Will-----------------------------'
+#print '----------------Email:   willwanghanyu@gmail.com----------'
+#print '----------------Version: 1.02-----------------------------'
 
 
 currentPath=os.getcwd()
@@ -196,7 +196,7 @@ getAllFiles(pathList,fileList,'xls')
 #print fileList
 for item in fileList:
     formatExcel(item)
-print '----------------------Complete!---------------------------'
-print '---------------Press ENTER key to exit!-------------------'
+#print '----------------------Complete!---------------------------'
+#print '---------------Press ENTER key to exit!-------------------'
 line=sys.stdin.readline()
 #exit(0)
