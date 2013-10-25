@@ -1,18 +1,14 @@
-<span style="font-size:13px;"><?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <config>
 	<input>
-		<col>F</col>
-		<col>H</col>
+		<col index='F'></col>
+		<col index='H'></col>
 	</input>
 	<output>
-		<col>
-			<name>same</name>
-			<operation>F+H</operation>
-		</col>
+		<col name='xxx' opt='F+H*5'></col>
 	</output>
 	<sort>
 		<col index='F' opt='+'></col>
 		<col index='H' opt='-'></col>
 	</sort>
 </config>
-</span>
