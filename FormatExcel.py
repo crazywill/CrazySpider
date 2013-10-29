@@ -1,25 +1,27 @@
 #!/usr/bin/env python
+# -*- coding=UTF8 -*-
 
 
 import xlwt
 import xlrd
 import os
 import sys
+import platform
 from XmlParse import *
 from Tools import *
 
 class FormatExcel:
     opt=('+','-','*','/')
-    def __init__(self,fileList,inputList,outputList,sortList):
+    def __init__(self,fileList,xmlParse):
         self.fileList=fileList
-        self.inputList=inputList
-        self.outputList=outputList
-        self.sortList=sortList
+        self.inputList=xmlParse.getInputList()
+        self.outputList=xmlParse.getOutputList()
+        self.sortList=xmlParse.getSortList()
 
     def isValid(self,sheet):
-        maxIndex=max(inputList, key=lambda x: x.getIndex()).getIndex()
+        maxIndex=max(self.inputList, key=lambda x: x.getIndex()).getIndex()
         maxNum=ord(maxIndex)-ord('A')
-        return sheet.ncols<maxNum
+        return sheet.ncols>=maxNum
 
     def getAscii(self,x):
         return ord(x)-ord('A')
@@ -33,10 +35,7 @@ class FormatExcel:
         result =[]
         for item in RPN:
             if item.isalpha():
-                if isDigitType(rawDataDict[item][row]):
-                    result.append(rawDataDict[item][row])
-                else:
-                    print 'calculateExp:: rawDataDict[item][row] is not digital!'
+                result.append(rawDataDict[item][row])
             elif self.isDigit(item):
                 result.append(float(item))
             elif item in FormatExcel.opt:
@@ -63,35 +62,51 @@ class FormatExcel:
         if self.isValid(sheet):
             coln=sheet.ncols
             rown=sheet.nrows
-            for item in inputList:
+            print 'coln: ',coln
+            print 'rown: ',rown
+            for item in self.inputList:
                 dataList=[]
                 for i in range(rown):
+                    print 'col',self.getAscii(item.getIndex())
                     dataList.append(sheet.cell_value(i,self.getAscii(item.getIndex())))
-                rawDataDict[item.getIndex]=dateList
+                rawDataDict[item.getIndex()]=dataList
         return rawDataDict
 
     def getOutputData(self,sheet,rown,rawDataDict):
-        otDataList=[]
         index=0
-        for item in outputList:
+        for item in self.outputList:
             sheet.write(0,index,item.getName())
             for i in range(rown):
                 if i==0:
                     continue
                 else:
-                    sheet.write(i,index,)
+                    RPN=self.getRPN(item.getOpt())
+                    sheet.write(i,index,self.calculateExp(RPN,i,rawDataDict))
             index+=1
-        return otDataList
 
     def formatExcel(self):
-        for xmlFile in fileList:
+        for xmlFile in self.fileList:
             if os.path.isfile(xmlFile):
                 excel=xlrd.open_workbook(xmlFile)
                 sheets=excel.sheets()
                 opExcel=xlwt.Workbook()
                 for sheet in sheets:
                     if self.isValid(sheet):
+                        rown=sheet.nrows
                         opSheet=opExcel.add_sheet(sheet.name)
+                        rawDataDict=self.getRawData(sheet)
+                        print 'sheet name: ',sheet.name
+                        print 'rawDataDict: ',rawDataDict
+                        self.getOutputData(opSheet,rown,rawDataDict)
+                opExcel.save(self.getSavePath(xmlFile))
+
+    def getSavePath(self,path):
+        systemType=platform.system()
+        if cmp(systemType,'Linux')==0:
+            path=unicode(os.path.splitext(path)[0],'utf8')+u'统计稿.xls'
+        else:
+            path=unicode(os.path.splitext(path)[0],'gbk')+u'统计稿.xls'
+        return path
 
     def compareOpt(self,a,b):
         dic={'+':1,'-':1,'*':2,'/':2,'(':3,')':3}
@@ -155,13 +170,13 @@ class FormatExcel:
     def getFileList(self):
         return self.fileList
 
-    def setInputList(self,inputList)
+    def setInputList(self,inputList):
         self.inputList=inputList
 
     def getInputList(self):
         return self.inputList
     
-    def setOutputList(self,outputList);
+    def setOutputList(self,outputList):
         self.outputList=outputList
 
     def getOutputList(self):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding=UTF8 -*-
 import os
 import sys
 

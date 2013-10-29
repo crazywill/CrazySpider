@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<input>
-		<col index='F'></col>
+		<col index='G'></col>
 		<col index='H'></col>
+		<col index='J'></col>
+		<col index='L'></col>
 	</input>
 	<output>
-		<col name='xxx' opt='F+H*5'></col>
+		<col name='上级网点' opt='G'></col>
+		<col name='网点名称' opt='H'></col>
+		<col name='申购(元)' opt='J'></col>
+		<col name='赎回(元)' opt='L'></col>
+		<col name='净收益(元)' opt='J-L'></col>
 	</output>
 	<sort>
 		<col index='F' opt='+'></col>

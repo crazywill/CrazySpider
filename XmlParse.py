@@ -1,8 +1,12 @@
 #!/usr/bin/env python
+# -*- coding=UTF8 -*-
 
 import os
 import sys
 from xml.dom import minidom
+_DEBUG=False
+if _DEBUG == True:
+    import pdb
 
 class InputConfig:
     def __init__(self,index):
@@ -54,7 +58,10 @@ class XmlParse:
         self.inputList=[]
         self.outputList=[]
         self.sortList=[]
-    
+        if _DEBUG == True:
+            pdb.set_trace()
+        self.parseXml()
+
     def getInputList(self):
         return self.inputList
 
@@ -108,8 +115,8 @@ class XmlParse:
                     sortConfig=SortConfig(index,opt)
                     self.sortList.append(sortConfig)
                     print 'sort: ',index,opt
-
-
+        else:
+            print 'xml path is invalid'
 
 
 
