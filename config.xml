@@ -7,11 +7,11 @@
 		<col index='L'></col>
 	</input>
 	<output>
-		<col name='上级网点' opt='G'></col>
-		<col name='网点名称' opt='H'></col>
-		<col name='申购(元)' opt='J'></col>
-		<col name='赎回(元)' opt='L'></col>
-		<col name='净收益(元)' opt='J-L'></col>
+		<col index='A' name='上级网点' opt='G'></col>
+		<col index='B' name='网点名称' opt='H'></col>
+		<col index='C' name='申购(元)' opt='J'></col>
+		<col index='D' name='赎回(元)' opt='L'></col>
+		<col index='E' name='净收益(元)' opt='J-L'></col>
 	</output>
 	<sort>
 		<col index='F' opt='+'></col>

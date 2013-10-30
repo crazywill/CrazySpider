@@ -19,7 +19,8 @@ class InputConfig:
         self.index=index
 
 class OutputConfig:
-    def __init__(self,name,opt):
+    def __init__(self,index,name,opt):
+        self.index=index
         self.name=name
         self.opt=opt
 
@@ -34,6 +35,12 @@ class OutputConfig:
 
     def getOpt(self):
         return self.opt
+
+    def setIndex(self,index):
+        self.index=index
+
+    def getIndex(self):
+        return index
 
 class SortConfig:
     def __init__(self,index,opt):
@@ -102,9 +109,10 @@ class XmlParse:
                 for colElement in colTag:
                     name=colElement.getAttribute('name')
                     opt=colElement.getAttribute('opt').upper()
-                    outputConfig=OutputConfig(name,opt)
+                    index=colElement.getAttribute('index').upper()
+                    outputConfig=OutputConfig(index,name,opt)
                     self.outputList.append(outputConfig)
-                    print 'output: ',name,opt
+                    print 'output: ',index,name,opt
             #get sort
             sortTag=root.getElementsByTagName('sort')
             for stElement in sortTag:
