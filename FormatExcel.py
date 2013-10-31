@@ -73,16 +73,20 @@ class FormatExcel:
         return rawDataDict
 
     def getOutputData(self,sheet,rown,rawDataDict):
-        index=0
+        result={}
         for item in self.outputList:
-            sheet.write(0,index,item.getName())
+            tmpList=[]
+            tmpList.append(item.getName())
+            #sheet.write(0,index,item.getName())
             for i in range(rown):
                 if i==0:
                     continue
                 else:
                     RPN=self.getRPN(item.getOpt())
-                    sheet.write(i,index,self.calculateExp(RPN,i,rawDataDict))
-            index+=1
+                    #sheet.write(i,index,self.calculateExp(RPN,i,rawDataDict))
+                    tmpList.append(calculateExp(RPN,i,rawDataDict))
+            result[item.getIndex()]=tmpList
+         
 
     def formatExcel(self):
         for xmlFile in self.fileList:
