@@ -9,14 +9,21 @@ if _DEBUG == True:
     import pdb
 
 class InputConfig:
-    def __init__(self,index):
+    def __init__(self,index,start):
         self.index=index
+        self.start=start
 
     def getIndex(self):
         return self.index
 
     def setIndex(self,index):
         self.index=index
+
+    def setStart(self,start):
+        self.start=start
+    
+    def getStart(self):
+        return self.start
 
 class OutputConfig:
     def __init__(self,index,name,opt):
@@ -98,7 +105,8 @@ class XmlParse:
                 colTag=itElement.getElementsByTagName('col')
                 for colElement in colTag:
                     index=colElement.getAttribute('index').upper()
-                    inputConfig=InputConfig(index)
+                    start=int(colElement.getAttribute('start'))
+                    inputConfig=InputConfig(index,start)
                     self.inputList.append(inputConfig)
                     print 'input :',index
 

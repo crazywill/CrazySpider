@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<input>
-		<col index='G'></col>
-		<col index='H'></col>
-		<col index='J'></col>
-		<col index='L'></col>
+		<col index='G' start='2'></col>
+		<col index='H' start='2'></col>
+		<col index='J' start='2'></col>
+		<col index='L' start='2'></col>
 	</input>
 	<output>
-		<col index='A' name='上级网点' opt='G'></col>
-		<col index='B' name='网点名称' opt='H'></col>
-		<col index='C' name='申购(元)' opt='J'></col>
-		<col index='D' name='赎回(元)' opt='L'></col>
-		<col index='E' name='净收益(元)' opt='J-L'></col>
+		<col index='A' name='上级网点' opt='G' aggregate='NULL'></col>
+		<col index='B' name='网点名称' opt='H' aggregate='NULL'></col>
+		<col index='C' name='申购(元)' opt='J' aggregate='SUM'></col>
+		<col index='D' name='赎回(元)' opt='L' aggregate='SUM'></col>
+		<col index='E' name='净收益(元)' opt='J-L' aggregate='AVG'></col>
 	</output>
 	<sort>
 		<col index='F' opt='+'></col>

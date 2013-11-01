@@ -30,12 +30,19 @@ class FormatExcel:
         indexList=[]
         for item in inputList:
             indexList.append(self.getAscii(item.getIndex()))
+    
+    def getMaxStart(self):
+        maxStart=max(self.inputList, key=lambda x:x.getStart()).getStart()
+        return maxStart
 
     def calculateExp(self,RPN,row,rawDataDict):
         result =[]
         for item in RPN:
             if item.isalpha():
-                result.append(rawDataDict[item][row])
+                if row < len(rawDataDict[item]):
+                    result.append(rawDataDict[item][row])
+                else:
+                    print 'row >= len(rawDataDict[item])'
             elif self.isDigit(item):
                 result.append(float(item))
             elif item in FormatExcel.opt:
@@ -66,14 +73,18 @@ class FormatExcel:
             print 'rown: ',rown
             for item in self.inputList:
                 dataList=[]
-                for i in range(rown):
+                i=item.getStart()-1
+                while i<rown:
                     print 'col',self.getAscii(item.getIndex())
                     dataList.append(sheet.cell_value(i,self.getAscii(item.getIndex())))
+                    i+=1
                 rawDataDict[item.getIndex()]=dataList
         return rawDataDict
 
     def getOutputData(self,sheet,rown,rawDataDict):
-        result={}
+        result=[]
+        index=0
+        for 
         for item in self.outputList:
             tmpList=[]
             tmpList.append(item.getName())
@@ -84,7 +95,7 @@ class FormatExcel:
                 else:
                     RPN=self.getRPN(item.getOpt())
                     #sheet.write(i,index,self.calculateExp(RPN,i,rawDataDict))
-                    tmpList.append(calculateExp(RPN,i,rawDataDict))
+                    tmpList.append(calculateExp(RPN,i-1,rawDataDict))
             result[item.getIndex()]=tmpList
          
 
